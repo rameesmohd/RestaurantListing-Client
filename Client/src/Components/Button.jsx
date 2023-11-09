@@ -7,7 +7,7 @@ const button = ({text,btnAction,loading}) => {
   return (
     <>
     <Stack spacing={2} direction="row">
-      <Button onClick={()=>btnAction()} variant="outlined">{loading ? <CachedIcon className='animate-spin'/> : text}</Button>
+      <Button onClick={()=>btnAction()} variant="outlined" disabled={loading}>{loading ? <CachedIcon className='animate-spin'/> : text}</Button>
     </Stack>
     </>
   )

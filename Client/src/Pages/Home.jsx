@@ -5,32 +5,17 @@ import AddIcon from '@mui/icons-material/Add';
 import FormModal from '../Components/FormModal'
 import { toast } from 'react-hot-toast'
 import userAxios from '../Axios/userAxios'
-
-const image=[
-  {
-    id : '1234', 
-    image : "https://media.istockphoto.com/id/1079901206/photo/3d-render-of-luxury-restaurant-interior.jpg?s=612x612&w=0&k=20&c=kKj5Uw0ZpuWKX8ZX6eXuKGc1sP86fMjIbZJFbWl9-ZM=",
-    name : 'The Coldest Sunset',
-    address : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.',
-    contact : 5598658551
-  },
-  {
-    id : '125634', 
-    image : "https://media.istockphoto.com/id/1079901206/photo/3d-render-of-luxury-restaurant-interior.jpg?s=612x612&w=0&k=20&c=kKj5Uw0ZpuWKX8ZX6eXuKGc1sP86fMjIbZJFbWl9-ZM=",
-    name : 'The Coldest Sunset',
-    address : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.',
-    contact: 23665554485
-  }
-]
+import Swal from 'sweetalert2'
 
 const Home = () => {
   const [showAddModal,setShowAddModal] = useState(false)
-  const [listData,setListData] = useState(image)
+  const [listData,setListData] = useState([])
   const [loading,setloading] = useState(false)
 
   const fetchData=async()=>{
       try {
         const res = await userAxios.get('/')
+        console.log(res.data);
         setListData(res.data.data)
       } catch (error) {
         console.log(error);
@@ -48,7 +33,7 @@ const Home = () => {
     ).then((res)=>{
         console.log(res)
         setListData((prev)=>[...prev,res.data.data])
-        toast.success(res.data.message)
+        toast.success('Addede successully!!')
     }).catch((err)=>{
         console.log(err)
         toast.error(res.data.message)
@@ -57,6 +42,41 @@ const Home = () => {
         setShowAddModal(false)
     })
   }
+
+  const deleteData=(id)=>{
+    try {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(async (result) => {
+        if (result.isConfirmed){
+          try {
+            await userAxios.delete(`/?id=${id}`)
+            const updatedData=listData.filter((value,index)=>value.id!==id)
+            setListData(updatedData)
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success"
+            })
+          } catch (error) {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong.",
+              icon: "error"
+            });
+          }
+        }
+      })
+    } catch (error) {
+      toast.error(error.message)
+    }
+}
 
   return (
     <>
@@ -69,7 +89,7 @@ const Home = () => {
             listData.map((obj,i)=>{
               return (
                 <div key={i} className='flex justify-center'> 
-                  <Cards obj={obj} />
+                  <Cards deleteData={deleteData} obj={obj} />
                 </div>
               )
             })
