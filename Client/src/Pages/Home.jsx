@@ -8,14 +8,14 @@ import userAxios from '../Axios/userAxios'
 
 const image=[
   {
-    _id : '1234', 
+    id : '1234', 
     image : "https://media.istockphoto.com/id/1079901206/photo/3d-render-of-luxury-restaurant-interior.jpg?s=612x612&w=0&k=20&c=kKj5Uw0ZpuWKX8ZX6eXuKGc1sP86fMjIbZJFbWl9-ZM=",
     name : 'The Coldest Sunset',
     address : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.',
     contact : 5598658551
   },
   {
-    _id : '125634', 
+    id : '125634', 
     image : "https://media.istockphoto.com/id/1079901206/photo/3d-render-of-luxury-restaurant-interior.jpg?s=612x612&w=0&k=20&c=kKj5Uw0ZpuWKX8ZX6eXuKGc1sP86fMjIbZJFbWl9-ZM=",
     name : 'The Coldest Sunset',
     address : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.',
@@ -30,9 +30,8 @@ const Home = () => {
 
   const fetchData=async()=>{
       try {
-        const data = await userAxios.get('/')
-        if(data)
-        setListData(data)
+        const res = await userAxios.get('/')
+        setListData(res.data.data)
       } catch (error) {
         console.log(error);
         toast.error(error.message)
@@ -40,15 +39,24 @@ const Home = () => {
   }
 
   useEffect(()=>{
-    // fetchData()
+    fetchData()
   },[])
 
-  const addNewData=async(obj)=>{
-    console.log(obj);
+  const addNewData=(obj)=>{
     setloading(true)
-    await userAxios.post('/',{obj})
+    userAxios.post('/',obj,{ headers: { 'Content-Type': 'multipart/form-data' }}
+    ).then((res)=>{
+        console.log(res)
+        setListData((prev)=>[...prev,res.data.data])
+        toast.success(res.data.message)
+    }).catch((err)=>{
+        console.log(err)
+        toast.error(res.data.message)
+    }).finally(()=>{
+        setloading(false)
+        setShowAddModal(false)
+    })
   }
-
 
   return (
     <>

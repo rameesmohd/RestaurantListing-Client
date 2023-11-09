@@ -1,20 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import Buttom from '../Components/Button'
+import toast from 'react-hot-toast'
 
 const Modal=({loading,role,obj,title,setShowModal,action})=>{
-  const [name,setName] = useState('')
-  const [address,setAddress] = useState('')
-  const [contact,setContact] = useState('')
-  const [image,setImage] = useState('')
+  const isEdit = role === 'edit'
+  const [name,setName] = useState(isEdit ? obj.name : '')
+  const [address,setAddress] = useState(isEdit ? obj.address : '')
+  const [contact,setContact] = useState(isEdit ? obj.contact : 0)
+  const [image,setImage] = useState( isEdit ? obj.image : '')
   const [error,setError] = useState({})
 
   const handleData = () => {
-    let obj = {
-      name: name,
-      address: address,
-      contact: contact,
-      image: image,
-    };
+    let values={}
+    if(role==='add') {
+      values.name= name,
+      values.address= address,
+      values.contact= contact,
+      values.image= image
+    }
+    if(role=='edit'){
+      if(obj.name===name && obj.address===address&&obj.contact===contact&&obj.image===image){
+        toast.error('No changes applied!!')
+        return 
+      }
+      values.id = obj.id
+      if(obj.name!==name){
+        values.name = name
+      }
+      if(obj.address!==address){
+        values.address = address
+      }
+      if(obj.contact !==contact){
+        values.contact = contact
+      }
+      if(obj.image !== image){
+        values.image = image
+      }
+    }
     let err = {};
     if (name.trim() === '') {
       err.name = 'Enter a name';
@@ -22,16 +44,15 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
     if (address.trim() === '') {
       err.address = 'Enter an address';
     }
-    if (contact.trim() === '') {
+    if (contact.length < 8) {
       err.contact = 'Enter your contact number';
     }
-    console.log(err);
     if (Object.keys(err).length === 0) {
-      action(obj);
+        action(values);
     } else {
-      setError(err);
+        setError(err);
     }
-  };
+  }
 
   return (
         <>
