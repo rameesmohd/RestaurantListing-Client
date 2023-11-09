@@ -10,9 +10,7 @@ const card = ({obj}) => {
   return (
     <>
     <div className="max-w-sm  rounded overflow-hidden shadow-lg">
-      <img className="w-full" 
-        src={obj.image}
-        alt="Sunset in the mountains"/>
+      <img className="w-full" src={obj.image} alt="Sunset in the mountains"/>
         <div className="px-6 py-4">
             <div className="font-bold text-xl mb-2">{obj.name}</div>
             <p className="text-gray-700 text-base">
@@ -28,14 +26,12 @@ const card = ({obj}) => {
             </div>
         </div>
     </div>
-    
-    {showModal && <FormModal 
+    { showModal && <FormModal 
     role={'edit'} 
     title={'Edit restaurant'} 
     obj={obj}
     setShowModal={setShowModal}
-    />
-    }
+    /> }
     </>
   )
 }

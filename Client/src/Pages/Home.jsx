@@ -3,7 +3,7 @@ import Navbar from '../Components/Navbar'
 import Cards from '../Components/Cards'
 import AddIcon from '@mui/icons-material/Add';
 import FormModal from '../Components/FormModal'
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 import userAxios from '../Axios/userAxios'
 
 const image=[
@@ -26,6 +26,7 @@ const image=[
 const Home = () => {
   const [showAddModal,setShowAddModal] = useState(false)
   const [listData,setListData] = useState(image)
+  const [loading,setloading] = useState(false)
 
   const fetchData=async()=>{
       try {
@@ -38,11 +39,16 @@ const Home = () => {
       }
   }
 
-  
-
   useEffect(()=>{
     // fetchData()
   },[])
+
+  const addNewData=async(obj)=>{
+    console.log(obj);
+    setloading(true)
+    await userAxios.post('/',{obj})
+  }
+
 
   return (
     <>
@@ -66,7 +72,7 @@ const Home = () => {
         </div>
     </div>
     </div>
-    { showAddModal && <FormModal title={'Add new restaurant'} setShowModal={setShowAddModal}  />}
+    { showAddModal && <FormModal loading={loading} role={'add'} title={'Add new restaurant'} setShowModal={setShowAddModal} action={addNewData} />}
     </>
   )
 }
