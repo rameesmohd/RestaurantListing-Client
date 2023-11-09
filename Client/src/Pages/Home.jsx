@@ -2,22 +2,25 @@ import React from 'react'
 import Navbar from '../Components/Navbar'
 import Cards from '../Components/Card'
 
+
 const Home = () => {
   return (
     <>
-        {/* <Navbar/> */}
-        <div className='container mx-auto w-full h-screen grid sm:grid-cols-4 gap-2'>
-          <div className='col-span-1'> 
-            <Cards/>
-          </div>
-          <div className='col-span-1'> 
-            <Cards/>
-          </div>   <div className='col-span-1'> 
-            <Cards/>
-          </div>   <div className='col-span-1'> 
-            <Cards/>
-          </div>
-        </div>
+    <Navbar/>
+    <h1 className='text-center text-3xl text-gray-500 my-8 underline animate-bounce'>Our Restaurants</h1>
+    <div className='container mx-auto'>
+        <div className='grid sm:grid-cols-4 gap-2'>
+          {
+            [...Array(5)].map(()=>{
+              return (
+                <div className='sm:col-span-1'> 
+                <Cards/>
+              </div>
+              )
+            })
+          }
+          </div>   
+    </div>
     </>
   )
 }

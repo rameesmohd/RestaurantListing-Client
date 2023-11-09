@@ -1,18 +1,17 @@
-import React from 'react'
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-const Button = () => {
+const button = () => {
   return (
     <>
     <Stack spacing={2} direction="row">
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
+      {/* <Button variant="text">Text</Button> */}
+      {/* <Button variant="contained">Contained</Button> */}
       <Button variant="outlined">Outlined</Button>
     </Stack>
     </>
   )
 }
 
-export default Button
+export default button
