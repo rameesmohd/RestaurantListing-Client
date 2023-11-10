@@ -36,19 +36,18 @@ const Home = () => {
         setShowAddModal(false)
     })
   }
-
+  
   const updateData=async(obj,setShowModal)=>{
     try {
       setloading(true)
       await userAxios.patch('/',obj,{ headers: { 'Content-Type': 'multipart/form-data' }})
       toast.success('Updated Successfully!!')
       fetchData()
-      setloading(false)
-      setShowModal(false)
     } catch (error) {
-      setShowModal(false)
-      setloading(false)
       toast.error(error.message)
+    } finally {
+      setloading(false)
+      setShowModal(false)
     }
   }
 
