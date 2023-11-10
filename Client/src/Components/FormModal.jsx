@@ -80,7 +80,7 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
                     {title}
                   </h3>
                 </div>
-                <form>
+               <form>
                 <div className="px-3 flex-auto">
                 <div onMouseOver={()=>setMouseOver(true)} onMouseOut={() => setMouseOver(false)} className="flex items-center justify-center w-full ">
                 { role==='edit' && (obj?.image ? (
@@ -143,8 +143,8 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
                     { error?.contact && <p className="text-xs text-red-500">{error.contact}</p>}
                   </div>
                 </div>
-                </form>
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+              </form>
+               <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
