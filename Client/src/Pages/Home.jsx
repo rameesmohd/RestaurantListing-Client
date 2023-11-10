@@ -91,7 +91,7 @@ const Home = () => {
 
   return (
     <>
-    <div className='bg-slate-50 mb-2'>
+    <div className='bg-slate-50 mb-2 pb-4'>
     <Navbar/>
     <h1 className='text-center text-3xl text-gray-500 my-8 animate-bounce'>Our Restaurants</h1>
     <hr className='mb-4' />
