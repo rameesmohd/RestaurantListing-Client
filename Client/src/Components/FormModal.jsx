@@ -22,12 +22,8 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
     let values={}
     let err = {}
     if(role==='add') {
-      values.name= name,
-      values.address= address,
-      values.contact= contact,
-      values.image= image
+      values = { name, address, contact, image }
     }
-
     if(role=='edit'){
       if( obj.name===name && 
         obj.address===address &&
