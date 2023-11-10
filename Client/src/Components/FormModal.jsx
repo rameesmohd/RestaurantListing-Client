@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Buttom from '../Components/Button'
 import toast from 'react-hot-toast'
 
@@ -12,14 +12,20 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
 
   const handleData = () => {
     let values={}
+    let err = {}
     if(role==='add') {
       values.name= name,
       values.address= address,
       values.contact= contact,
       values.image= image
     }
+
     if(role=='edit'){
-      if(obj.name===name && obj.address===address&&obj.contact===contact&&obj.image===image){
+      if( obj.name===name && 
+        obj.address===address &&
+        obj.contact===contact&&
+        obj.image===image
+        ){
         toast.error('No changes applied!!')
         return 
       }
@@ -37,7 +43,7 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
         values.image = image
       }
     }
-    let err = {};
+
     if (name.trim() === '') {
       err.name = 'Enter a name';
     }

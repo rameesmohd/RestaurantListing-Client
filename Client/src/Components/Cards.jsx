@@ -18,39 +18,7 @@ const card = ({obj,deleteData}) => {
         toast.error(error.message)
       }
     }
-
-  // const deleteData=(id)=>{
-  //     try {
-  //       Swal.fire({
-  //         title: "Are you sure?",
-  //         text: "You won't be able to revert this!",
-  //         icon: "warning",
-  //         showCancelButton: true,
-  //         confirmButtonColor: "#3085d6",
-  //         cancelButtonColor: "#d33",
-  //         confirmButtonText: "Yes, delete it!"
-  //       }).then(async (result) => {
-  //         if (result.isConfirmed){
-  //           try {
-  //             await userAxios.delete(`/?id=${id}`)
-  //             Swal.fire({
-  //               title: "Deleted!",
-  //               text: "Your file has been deleted.",
-  //               icon: "success"
-  //             })
-  //           } catch (error) {
-  //             Swal.fire({
-  //               title: "Error!",
-  //               text: "Something went wrong.",
-  //               icon: "error"
-  //             });
-  //           }
-  //         }
-  //       })
-  //     } catch (error) {
-  //       toast.error(error.message)
-  //     }
-  // }
+    
   return (
     <>
     <div className="max-w-sm  rounded overflow-hidden shadow-lg">
@@ -70,12 +38,13 @@ const card = ({obj,deleteData}) => {
                 <EditNoteIcon  className='mx-2 hover:scale-105 cursor-pointer'/>
               </IconButton>
               <IconButton onClick={()=>deleteData(obj.id)}>
-              <DeleteOutlineIcon className='mx-2 hover:scale-105 cursor-pointer'/>
+                <DeleteOutlineIcon className='mx-2 hover:scale-105 cursor-pointer'/>
               </IconButton>
             </div>
         </div>
     </div>
-    { showModal && <FormModal 
+    { showModal && 
+    <FormModal 
     role={'edit'} 
     title={'Edit restaurant'} 
     obj={obj}

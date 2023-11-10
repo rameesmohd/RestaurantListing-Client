@@ -15,7 +15,6 @@ const Home = () => {
   const fetchData=async()=>{
       try {
         const res = await userAxios.get('/')
-        console.log(res.data);
         setListData(res.data.data)
       } catch (error) {
         console.log(error);
@@ -23,15 +22,10 @@ const Home = () => {
       }
   }
 
-  useEffect(()=>{
-    fetchData()
-  },[])
-
   const addNewData=(obj)=>{
     setloading(true)
     userAxios.post('/',obj,{ headers: { 'Content-Type': 'multipart/form-data' }}
     ).then((res)=>{
-        console.log(res)
         setListData((prev)=>[...prev,res.data.data])
         toast.success('Addede successully!!')
     }).catch((err)=>{
@@ -75,32 +69,35 @@ const Home = () => {
       })
     } catch (error) {
       toast.error(error.message)
-    }
-}
+    }}
+  
+  useEffect(()=>{
+    fetchData()
+  },[])
 
   return (
     <>
     <div className='bg-slate-50 mb-2'>
     <Navbar/>
     <h1 className='text-center text-3xl text-gray-500 my-8  animate-bounce'>Our Restaurants</h1>
-    <div className='container mx-auto '>
+    <div className='container mx-auto px-2'>
         <div className='grid sm:grid-cols-4 gap-2'>
-          {
-            listData.map((obj,i)=>{
+          { listData.map((obj,i)=>{
               return (
                 <div key={i} className='flex justify-center'> 
                   <Cards deleteData={deleteData} obj={obj} />
                 </div>
               )
-            })
-          }
-          <div onClick={()=>setShowAddModal(!showAddModal)} className="max-w-sm z-20 rounded overflow-hidden shadow-lg bg-slate-300 flex justify-center items-center hover:bg-slate-200 cursor-pointer">
+            }) }
+          <div className='flex justify-center'>
+          <div onClick={()=>setShowAddModal(!showAddModal)} className="w-full z-20 rounded  overflow-hidden shadow-lg bg-slate-300 flex justify-center items-center hover:bg-slate-200 cursor-pointer">
                 <AddIcon fontSize='large' className='text-gray-700 hover:scale-125'/>
           </div>
         </div>
+      </div>
     </div>
     </div>
-    { showAddModal && <FormModal loading={loading} role={'add'} title={'Add new restaurant'} setShowModal={setShowAddModal} action={addNewData} />}
+    { showAddModal && <FormModal loading={loading} role={'add'} title={'Add new restaurant'} setShowModal={setShowAddModal} action={addNewData} /> }
     </>
   )
 }
