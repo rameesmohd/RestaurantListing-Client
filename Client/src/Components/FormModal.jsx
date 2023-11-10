@@ -140,7 +140,7 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
                     </div>
                 </form>
                 <div className="flex items-center justify-around p-6 border-t border-solid border-blueGray-200 rounded-b">
-                  <Buttom  loading={loading} textColor={'red'} text={'Close'} btnAction={() => setShowModal(false)}/>
+                  <Buttom  loading={false} textColor={'red'} text={'Close'} btnAction={() => setShowModal(false)}/>
                   <Buttom loading={loading} textColor={'blue'} text={'Save'} btnAction={handleData}/>
                 </div>
               </div>
