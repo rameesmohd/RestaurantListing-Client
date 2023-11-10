@@ -30,7 +30,7 @@ const Home = () => {
         toast.success('Addede successully!!')
     }).catch((err)=>{
         console.log(err)
-        toast.error(res.data.message)
+        toast.error(err.message)
     }).finally(()=>{
         setloading(false)
         setShowAddModal(false)
