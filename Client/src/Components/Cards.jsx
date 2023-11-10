@@ -3,34 +3,23 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import FormModal from '../Components/FormModal'
 import { IconButton } from '@mui/material';
-import userAxios from '../Axios/userAxios';
-import toast from 'react-hot-toast';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 
-const card = ({obj,deleteData}) => {
+const card = ({loading,obj,deleteData,updateData}) => {
   const [showModal,setShowModal] = useState(false)
-
-  const updateData=async(obj)=>{
-      try {
-        const response = await userAxios.patch('/',obj,{ headers: { 'Content-Type': 'multipart/form-data' }})
-        toast.success('Updated Successfully!!')
-      } catch (error) {
-        console.log(error);
-        toast.error(error.message)
-      }
-    }
-    
   return (
     <>
-    <div className="max-w-sm  rounded overflow-hidden shadow-lg">
-      <img className="w-full h-44" src={obj.image}  alt="Sunset in the mountains"/>
-        <div className="px-6 py-4">
+    <div className="max-w-sm  rounded overflow-hidden shadow-lg hover:scale-105 z-30">
+      <img className="w-96 max-w-96 h-44" src={obj.image}  alt="Sunset in the mountains"/>
+        <div className="px-6 py-4 min-h-24">
             <div className="font-bold text-xl mb-2">{obj.name}</div>
-            <p className="text-gray-700 text-base">
+            <p className="text-gray-700 text-base break-words whitespace-normal min-h-[1.5rem] line-clamp-2">
               {obj.address}
             </p>
         </div>
-        <div className="px-6 pt-4 pb-3 flex justify-between">
+        <div className="px-6 pt-4 pb-3  flex justify-between">
             <div>
+                <ContactPhoneIcon className='mx-2'/>
                 {obj.contact}
             </div>
             <div>
@@ -48,6 +37,7 @@ const card = ({obj,deleteData}) => {
     role={'edit'} 
     title={'Edit restaurant'} 
     obj={obj}
+    loading={loading}
     action={updateData}
     setShowModal={setShowModal}
     /> }

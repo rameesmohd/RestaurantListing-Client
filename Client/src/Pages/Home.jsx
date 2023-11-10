@@ -37,6 +37,21 @@ const Home = () => {
     })
   }
 
+  const updateData=async(obj,setShowModal)=>{
+    try {
+      setloading(true)
+      await userAxios.patch('/',obj,{ headers: { 'Content-Type': 'multipart/form-data' }})
+      toast.success('Updated Successfully!!')
+      fetchData()
+      setloading(false)
+      setShowModal(false)
+    } catch (error) {
+      setShowModal(false)
+      setloading(false)
+      toast.error(error.message)
+    }
+  }
+
   const deleteData=(id)=>{
     try {
       Swal.fire({
@@ -79,22 +94,23 @@ const Home = () => {
     <>
     <div className='bg-slate-50 mb-2'>
     <Navbar/>
-    <h1 className='text-center text-3xl text-gray-500 my-8  animate-bounce'>Our Restaurants</h1>
+    <h1 className='text-center text-3xl text-gray-500 my-8 animate-bounce'>Our Restaurants</h1>
+    <hr className='mb-4' />
     <div className='container mx-auto px-2'>
         <div className='grid sm:grid-cols-4 gap-2'>
           { listData.map((obj,i)=>{
               return (
                 <div key={i} className='flex justify-center'> 
-                  <Cards deleteData={deleteData} obj={obj} />
+                  <Cards loading={loading} deleteData={deleteData} updateData={updateData} obj={obj} />
                 </div>
               )
             }) }
-          <div className='flex justify-center'>
-          <div onClick={()=>setShowAddModal(!showAddModal)} className="w-full z-20 rounded  overflow-hidden shadow-lg bg-slate-300 flex justify-center items-center hover:bg-slate-200 cursor-pointer">
-                <AddIcon fontSize='large' className='text-gray-700 hover:scale-125'/>
+          <div className='flex justify-center w-full min-h-[320px]'>
+            <div onClick={()=>setShowAddModal(!showAddModal)} className="w-full z-20 rounded overflow-hidden shadow-lg bg-slate-300 flex justify-center items-center hover:bg-slate-200 cursor-pointer">
+                  <AddIcon fontSize='large' className='text-gray-700 hover:scale-125'/>
+            </div>  
           </div>
         </div>
-      </div>
     </div>
     </div>
     { showAddModal && <FormModal loading={loading} role={'add'} title={'Add new restaurant'} setShowModal={setShowAddModal} action={addNewData} /> }

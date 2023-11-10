@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Buttom from '../Components/Button'
 import toast from 'react-hot-toast'
+import EditIcon from '@mui/icons-material/Edit';
 
 const Modal=({loading,role,obj,title,setShowModal,action})=>{
   const isEdit = role === 'edit'
@@ -9,6 +10,12 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
   const [contact,setContact] = useState(isEdit ? obj.contact : 0)
   const [image,setImage] = useState( isEdit ? obj.image : '')
   const [error,setError] = useState({})
+  const [mouseOver,setMouseOver] = useState(false)
+  const fileInputRef = useRef()
+
+  const handleFileClick = () => {
+    fileInputRef.current.click();
+  };
 
   const handleData = () => {
     let values={}
@@ -53,8 +60,11 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
     if (contact.length < 8) {
       err.contact = 'Enter your contact number';
     }
+    if(image===''){
+      err.image = 'Please choose a picture'
+    }
     if (Object.keys(err).length === 0) {
-        action(values);
+        action(values,setShowModal);
     } else {
         setError(err);
     }
@@ -65,23 +75,33 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto max-w-xl my-6 mx-auto">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none px-3">
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                <div className="flex items-center justify-center p-5  border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-2xl font-semibold">
                     {title}
                   </h3>
-                  <button
-                    className="p-1 ml-auto border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)} >
-                    <span className="text-4xl">
-                      ×
-                    </span>
-                  </button>
                 </div>
                 <form>
                 <div className="px-3 flex-auto">
-                <div className="flex items-center justify-center w-full">
-                  
-                { role==='edit' && (obj?.image ? <img src={obj.image} className="h-64 object-cover w-72" alt="" /> :  
+                <div onMouseOver={()=>setMouseOver(true)} onMouseOut={() => setMouseOver(false)} className="flex items-center justify-center w-full ">
+                { role==='edit' && (obj?.image ? (
+                   <div onClick={handleFileClick} className="relative cursor-pointer flex justify-center items-center">
+                   <div className={`absolute ${mouseOver ? '' : 'hidden'}`}>
+                     <EditIcon />
+                   </div>
+                   <img
+                     onMouseOver={() => console.log('sdfsad')}
+                     src={image===obj.image? obj.image : (image instanceof File ? URL.createObjectURL(image) : '')}
+                     className="h-64 object-cover w-72 hover:opacity-40 "
+                     alt=""
+                   />
+                   <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    style={{ display: 'none' }}
+                    onChange={(e)=>setImage(e.target.files[0])}
+                    ref={fileInputRef} />
+                 </div>
+                ) :  
                 <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-52 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100 ">
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -106,20 +126,21 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
                   </label> )}
 
                 </div>
+                { error.image && <p className="text-xs text-red-500">{error.image}</p>}
                   <div>
                     <label className="text-gray-500 text-sm">Name</label>
                     <input onChange={(e)=>setName(e.target.value)} className="w-full border border-gray-400 rounded-md" defaultValue={obj?.name} type="text" />
-                    { error.name && <p className="text-xs text-red-500">Enter a name</p>}
+                    { error.name && <p className="text-xs text-red-500">{error.name}</p>}
                   </div>
                   <label className="text-gray-500 text-sm">Address</label>
                   <div className="w-full">
                     <textarea onChange={(e)=>setAddress(e.target.value)}  name="" id="" cols="35" rows="3" defaultValue={obj?.address} className="border border-gray-400 rounded-md"></textarea>
-                    { error?.address && <p className="text-xs text-red-500">Enter address</p>}
+                    { error?.address && <p className="text-xs text-red-500">{error.address}</p>}
                   </div>
                   <div>
                     <label className="text-gray-500 text-sm">Contact</label>
                     <input onChange={(e)=>setContact(e.target.value)} defaultValue={obj?.contact} className="w-full border border-gray-400 rounded-md" type="number" />
-                    { error?.contact && <p className="text-xs text-red-500">Enter contact number</p>}
+                    { error?.contact && <p className="text-xs text-red-500">{error.contact}</p>}
                   </div>
                 </div>
                 </form>
@@ -136,9 +157,8 @@ const Modal=({loading,role,obj,title,setShowModal,action})=>{
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-  );
+       </>
+  )
 }
 
 export default Modal
