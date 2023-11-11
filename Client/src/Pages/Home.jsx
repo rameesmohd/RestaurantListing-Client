@@ -12,13 +12,17 @@ const Home = () => {
   const [listData,setListData] = useState([])
   const [loading,setloading] = useState(false)
 
+  const handleError = (error) => {
+    console.error(error);
+    toast.error(error.message);
+  };
+
   const fetchData=async()=>{
       try {
         const res = await userAxios.get('/')
         setListData(res.data.data)
       } catch (error) {
-        console.log(error);
-        toast.error(error.message)
+        handleError(error)
       }
   }
 
@@ -28,9 +32,8 @@ const Home = () => {
     ).then((res)=>{
         setListData((prev)=>[...prev,res.data.data])
         toast.success('Addede successully!!')
-    }).catch((err)=>{
-        console.log(err)
-        toast.error(err.message)
+    }).catch((error)=>{
+      handleError(error)
     }).finally(()=>{
         setloading(false)
         setShowAddModal(false)
@@ -44,7 +47,7 @@ const Home = () => {
       toast.success('Updated Successfully!!')
       fetchData()
     } catch (error) {
-      toast.error(error.message)
+      handleError(error)
     } finally {
       setloading(false)
       setShowModal(false)
@@ -82,7 +85,7 @@ const Home = () => {
         }
       })
     } catch (error) {
-      toast.error(error.message)
+      handleError(error)
     }}
   
   useEffect(()=>{
@@ -106,7 +109,7 @@ const Home = () => {
             }) }
           <div className='flex justify-center w-full min-h-[320px]'>
             <div onClick={()=>setShowAddModal(!showAddModal)} className="w-full z-20 rounded overflow-hidden shadow-lg bg-slate-300 flex justify-center items-center hover:bg-slate-200 cursor-pointer">
-                  <AddIcon fontSize='large' className='text-gray-700 hover:scale-125'/>
+                <AddIcon fontSize='large' className='text-gray-700 hover:scale-125'/>
             </div>  
           </div>
         </div>
